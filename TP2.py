@@ -76,7 +76,7 @@ for cote in bibliotheque:
     date_publication = bibliotheque[cote]["date_publication"]
     if bibliotheque[cote]["auteur"] == "William Shakespeare":
 
-            cote = f"SW{cote[1:]}"
+            cote = f"WS{cote[1:]}"
             new_bibliotheque[cote] = {"titre" : titre, "auteur" : auteur, "date_publication" : date_publication}
 
     else:
@@ -100,6 +100,7 @@ csvfile = open('emprunts.csv', newline='')
 c = csv.reader(csvfile)
 for cote in bibliotheque:
         bibliotheque[cote]["emprunts"] = "disponible"
+        bibliotheque[cote]["date_emprunt"] = "-"
 
 for row in c:
     if row[0] in bibliotheque:
@@ -135,6 +136,7 @@ for cote in bibliotheque:
 
         temps_ecoule = (date_actuelle - date_emprunt).days
 
+
         if temps_ecoule > 30:
             frais_retard = (temps_ecoule - 30)*2
 
@@ -143,19 +145,17 @@ for cote in bibliotheque:
 
             livre_retard.append(f"{bibliotheque[cote]['titre']} : {frais_retard}$")
             bibliotheque[cote]["frais_retard"] = f"{frais_retard}$"
+            bibliotheque[cote]["livres_perdus"] = "non perdu"
 
         if temps_ecoule > 365:
             livres_perdus.append(bibliotheque[cote]["titre"])
             bibliotheque[cote]["livres_perdus"] = "livre perdu"
 
+    else:
+        bibliotheque[cote]["frais_retard"] = "-"
+        bibliotheque[cote]["livres_perdus"] = "non perdu"
+
 print(f"liste des livres en retard avec les frais applicables: {livre_retard}")
 print(f"liste des livres perdus: {livres_perdus}")
 
 print(f' \n Bibliotheque avec ajout des retards et frais : {bibliotheque} \n')
-
-
-
-
-
-
-
